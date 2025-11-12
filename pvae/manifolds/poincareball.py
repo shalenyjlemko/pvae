@@ -1,6 +1,18 @@
 import torch
 from geoopt.manifolds import PoincareBall as PoincareBallParent
-from geoopt.manifolds.poincare.math import _lambda_x, arsinh, tanh
+
+# Compatibility fix for newer geoopt versions
+# In newer versions, math functions are methods of the manifold
+try:
+    from geoopt.manifolds.poincare.math import _lambda_x, arsinh, tanh
+except (ImportError, ModuleNotFoundError):
+    # For newer geoopt versions, we'll use torch functions and manifold methods
+    def _lambda_x(x, c, keepdim=False, dim=-1):
+        """Conformal factor for Poincare ball"""
+        return 2 / (1 - c * x.pow(2).sum(dim=dim, keepdim=keepdim))
+    
+    arsinh = torch.asinh
+    tanh = torch.tanh
 
 MIN_NORM = 1e-15
 

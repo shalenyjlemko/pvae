@@ -1,0 +1,18 @@
+# Updated requirements for Python 3.8-3.10
+# Original package versions were too old for modern systems
+
+numpy>=1.22.0,<2.0.0
+pillow>=9.0.0
+scikit-learn>=1.0.0
+scipy>=1.7.0
+seaborn>=0.11.0
+matplotlib>=3.3.0
+
+# PyTorch - use modern version with CPU support
+# Installing via conda is recommended for PyTorch
+# torch>=1.10.0
+# torchvision>=0.11.0
+
+# Geoopt - hyperbolic geometry library
+# We'll install from the specific commit or use latest compatible version
+git+https://github.com/geoopt/geoopt.git@010f5bdf1d6cf217fb47a767e2d93e39369e4cb2#egg=geoopt
