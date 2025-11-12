@@ -9,7 +9,7 @@ This is based on my experience getting the 2019 code working in 2025 with modern
 The paper includes three main experiments:
 1. **Synthetic Tree Dataset** - Demonstrates hierarchical structure learning
 2. **MNIST Dataset** - Compares Euclidean vs Poincaré embeddings
-3. **Custom CSV Dataset** - For your own tabular data
+3. **Custom CSV Dataset** - For one's own tabular data
 
 ---
 
