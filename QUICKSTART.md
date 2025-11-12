@@ -6,7 +6,7 @@ If you're setting up the environment for the first time, follow these steps:
 
 ### 1. Navigate to the Repository
 ```powershell
-cd C:\Users\denis\OneDrive\Desktop\Uni\M2\projects\vae_sepsis\pvae\pvae
+cd <your_desired_path_to>\pvae
 ```
 
 ### 2. Create Conda Environment
@@ -46,7 +46,7 @@ python -c "import pvae; print('Success! PVAE is ready to use.')"
 ### Activate Environment
 ```powershell
 conda activate pvae
-cd C:\Users\denis\OneDrive\Desktop\Uni\M2\projects\vae_sepsis\pvae\pvae
+cd <your_desired_path_to>\pvae
 ```
 
 ## Quick Test (30 seconds)

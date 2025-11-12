@@ -5,7 +5,7 @@ This guide documents the steps taken to get the 6-year-old PVAE repository runni
 ## Repository Information
 - **Original Repository**: https://github.com/emilemathieu/pvae
 - **Paper**: Continuous Hierarchical Representations with Poincaré Variational Auto-Encoders (NeurIPS 2019)
-- **Local Path**: `C:\Users\denis\OneDrive\Desktop\Uni\M2\projects\vae_sepsis\pvae\pvae`
+- **Local Path**: `<your_desired_path_to>\pvae`
 
 ## Issues Encountered and Solutions
 
@@ -167,7 +167,7 @@ These are cosmetic and do not affect functionality.
 To use the environment in the future:
 ```bash
 conda activate pvae
-cd C:\Users\denis\OneDrive\Desktop\Uni\M2\projects\vae_sepsis\pvae\pvae
+cd <your_desired_path_to>\pvae
 ```
 
 ## Troubleshooting
@@ -175,7 +175,7 @@ cd C:\Users\denis\OneDrive\Desktop\Uni\M2\projects\vae_sepsis\pvae\pvae
 ### Import Error: "ModuleNotFoundError: No module named 'pvae'"
 Make sure you're in the correct directory:
 ```bash
-cd C:\Users\denis\OneDrive\Desktop\Uni\M2\projects\vae_sepsis\pvae\pvae
+cd <your_desired_path_to>\pvae
 ```
 
 ### CUDA Errors
