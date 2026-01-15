@@ -16,9 +16,9 @@ class CSVDataset(torch.utils.data.Dataset):
         filename = 'data/{}.csv'.format(csv_name)
         dataset = np.array(load_csv(filename))
         dataset = dataset[1:, :]
-        self.images = dataset[:, 0:-1].astype(np.float)
+        self.images = dataset[:, 0:-1].astype(float)
         self.latents = dataset[:, [-1]]
-        self.latents = self.latents.astype(np.int)
+        self.latents = self.latents.astype(int)
 
     def __len__(self):
         return len(self.images)

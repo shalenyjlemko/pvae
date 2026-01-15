@@ -196,6 +196,20 @@ class HyperbolicRadius(dist.Distribution):
         value = self.sample(sample_shape)
         return impl_rsample.apply(value, self.scale, self.c, self.dim)
 
+    def _build_xi(self, mean, stddev, right_mult):
+        mean = mean.view(-1, 1).clamp_min(1e-6)
+        stddev = stddev.view(-1, 1).clamp_min(1e-6)
+        base = torch.max(stddev, self.scale.view(-1, 1))
+
+        left_factors = torch.tensor([0.05, 0.1, 0.2, 0.4, 0.7], device=self.device).view(1, -1)
+        right_factors = torch.tensor([0.5, 1.0, 2.0, 4.0, 8.0], device=self.device).view(1, -1)
+
+        left = torch.clamp(mean * left_factors, min=1e-6)
+        right = mean + base * right_mult * right_factors
+
+        xi = torch.cat([left, mean, right], dim=1)
+        return xi
+
     def sample(self, sample_shape=torch.Size()):
         if sample_shape == torch.Size(): sample_shape=torch.Size([1])
         with torch.no_grad():
@@ -203,12 +217,22 @@ class HyperbolicRadius(dist.Distribution):
             stddev = self.stddev
             if torch.isnan(stddev).any(): stddev[torch.isnan(stddev)] = self.scale[torch.isnan(stddev)]
             if torch.isnan(mean).any(): mean[torch.isnan(mean)] = ((self.dim - 1) * self.scale.pow(2) * self.c.sqrt())[torch.isnan(mean)]
-            steps = torch.linspace(0.1, 3, 10).to(self.device)
-            steps = torch.cat((-steps.flip(0), steps))
-            xi = [mean + s * torch.min(stddev, .95 * mean / 3) for s in steps]
-            xi = torch.cat(xi, dim=1)
-            ars = ARS(self.log_prob, self.grad_log_prob, self.device, xi=xi, ns=20, lb=0)
-            value = ars.sample(sample_shape)
+            right_mult = 1.0
+            ars = None
+            for _ in range(6):
+                xi = self._build_xi(mean, stddev, right_mult)
+                try:
+                    ars = ARS(self.log_prob, self.grad_log_prob, self.device, xi=xi, ns=20, lb=0)
+                    break
+                except IOError:
+                    right_mult *= 2.0
+
+            if ars is None:
+                mean_safe = mean.view(-1, 1).clamp_min(1e-6)
+                std_safe = stddev.view(-1, 1).clamp_min(1e-6)
+                value = dist.Normal(mean_safe, std_safe).sample(sample_shape).abs().clamp_min(1e-6)
+            else:
+                value = ars.sample(sample_shape)
         return value
 
     def __while_loop(self, logM, proposal, sample_shape):

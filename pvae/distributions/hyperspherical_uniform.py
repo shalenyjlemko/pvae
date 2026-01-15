@@ -29,7 +29,7 @@ class HypersphericalUniform(torch.distributions.Distribution):
         return output / output.norm(dim=-1, keepdim=True)
 
     def entropy(self):
-        return self.__log_surface_area()
+        return self._log_surface_area()
     
     def log_prob(self, x):
         return - torch.ones(x.shape[:-1]).to(self._device) * self._log_normalizer()
@@ -39,4 +39,4 @@ class HypersphericalUniform(torch.distributions.Distribution):
 
     def _log_surface_area(self):
         return math.log(2) + ((self._dim + 1) / 2) * math.log(math.pi) - torch.lgamma(
-            torch.Tensor([(self._dim + 1) / 2]))
+            torch.tensor([(self._dim + 1) / 2], device=self._device))
